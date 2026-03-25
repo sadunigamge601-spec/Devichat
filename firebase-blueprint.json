@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "email": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "birthday": { "type": "string", "format": "date" },
+        "country": { "type": "string" },
+        "facebook": { "type": "string" },
+        "instagram": { "type": "string" },
+        "tiktok": { "type": "string" },
+        "snapchat": { "type": "string" },
+        "pinterest": { "type": "string" },
+        "youtube": { "type": "string" },
+        "lastSeen": { "type": "string", "format": "date-time" },
+        "blockedUsers": { "type": "array", "items": { "type": "string" } },
+        "blockedGroups": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["uid", "displayName"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A conversation between users, a group, or a channel",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["private", "group", "channel"] },
+        "name": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "members": { "type": "array", "items": { "type": "string" } },
+        "createdBy": { "type": "string" },
+        "managers": { "type": "array", "items": { "type": "string" } },
+        "isPublic": { "type": "boolean" },
+        "isChatLocked": { "type": "boolean" },
+        "isCallsLocked": { "type": "boolean" },
+        "isAddMembersLocked": { "type": "boolean" },
+        "isShareLocked": { "type": "boolean" },
+        "isReactionsLocked": { "type": "boolean" }
+      },
+      "required": ["id", "type", "members"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A message sent in a chat",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "chatId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderPhoto": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "type": { "type": "string", "enum": ["text", "image", "video", "audio", "file", "app", "film"] },
+        "fileName": { "type": "string" },
+        "fileSize": { "type": "number" },
+        "fileType": { "type": "string" },
+        "fileUrl": { "type": "string" }
+      },
+      "required": ["id", "chatId", "senderId", "createdAt"]
+    },
+    "Status": {
+      "title": "Status",
+      "description": "A user's status update (story)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "imageUrl", "createdAt", "expiresAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "Chat metadata"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages within a chat"
+    },
+    "/statuses/{statusId}": {
+      "schema": "Status",
+      "description": "User status updates"
+    }
+  }
+}
